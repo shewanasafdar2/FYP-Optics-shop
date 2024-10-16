@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Details</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="search-bar">
+        <form action="search.php" method="get">
+            <input type="text" name="search" placeholder="Search...">
+            <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+        </form>
+    </div>
+
+    <!-------------navbar---------->  
+    <nav>
+        <div class="logo">
+            <a href="#"><img src="img/logo eye.png" alt=""></a>
+        </div>
+        <ul class="nav-links" id="navLinks">
+            <li><a class="active" href="index.php"><i class="fa-solid fa-house"></i>Home</a></li>
+            
+            <?php $sql = " SELECT * FROM `tbl_categories` WHERE `category_status` = 'A' AND `category_showNav` = '1' ORDER BY `category_id` DESC"; 
+            $result = mysqli_query($con,$sql);
+            if($result){
+                if(mysqli_num_rows($result)>0){
+                    while($row = mysqli_fetch_array($result)){
+                        ?>
+                         <li><a href="allProducts.php?categoryID=<?php echo $row['category_id']; ?>">
+                         <?php echo $row['category_name']; ?></a></li>
+                        <?php
+                    }
+                }
+            }
+            
+            ?>
+            
+            
+           
+            <li><a href="allProducts.php">All Products</a></li>
+            <?php if(isUserLogin() === true && $_SESSION['userType'] == "C"){ 
+                ?>
+            <li class="dropdown">
+                <a href="javascript:;" class="dropbtn"><?php echo $_SESSION['userName']; ?></a>
+                <div class="dropdown-content">
+                    <a href="myProfile.php"><i class="fa fa-user"></i>My Profile</a>
+                    <div class="page-divider"></div>
+                    <a href="changePassword.php"><i class="fa fa-lock"></i> Change Password</a>
+                    <div class="page-divider"></div>
+                    <a href="myOrder.php"><i class="fa fa-truck"></i> My Orders</a>
+                    <div class="page-divider"></div>
+                    <a href="logout.php"><i class="fas fa-sign-out"></i> Logout</a>
+                </div>
+            </li>
+            <li><a href="cart.html"><i class="fa-solid fa-cart-shopping"></i></a></li>
+        
+                <?php
+            }else{
+                ?>
+                <li><a href="login.php"><i class="fa-solid fa-user"></i>Login</a></li>
+                <li><a href="addToCart.php"><i class="fa-solid fa-cart-shopping"></i></a></li>
+                <?php
+            }?>
+            
+            
+        </ul>
+        
+    </nav>
+    
+    <div class="container8">
+        <section id="product2">
+            <h2 style="font-size: 2rem; margin-bottom: 1rem;">Order Details</h2>
+            
+            </section>
+        <div class="order-info">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Order #</th>
+                        <th>Order Date</th>
+                        <th>Order Status</th>
+                        <th>Shipping Address</th>
+                        
+                      
+                    </tr>
+                </thead>
+                
+                <tr>
+                  
+                    <td>1234</td>
+                    <td>1234</td>
+                    <td>Pending</td>
+                    <td>
+                        123 Main St<br>
+                        Anytown, USA 12345
+                    </td>
+                    
+                </tr>
+                
+            </table>
+        </div>
+        <div class="order-summary">
+            <section id="product2">
+                <h2 style="font-size: 2rem; margin-bottom: 1rem;">Order Summary</h2>
+                
+                </section>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Image</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Product 1</td>
+                        <td><img src="mens sunglasses/mens sunglasses_03.jpg" alt="" width="40" height="40"></td>
+                        <td>2</td>
+                        <td>Rs 50</td>
+                        <td>Rs 100</td>
+                    </tr>
+                    
+                        
+                    <tr class="subtotal">
+                        <td colspan="4">Subtotal:</td>
+                        <td>Rs 250</td>
+                    </tr>
+                    <tr class="shipping">
+                        <td colspan="4">Shipping:</td>
+                        <td>Free</td>
+                    </tr>
+                    
+                    <tr class="total">
+                        <td colspan="4">Total:</td>
+                        <td>Rs 280</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+    </div>
+</body>
+</html>

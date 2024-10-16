@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body>
+    <div class="search-bar">
+        <form action="search.php" method="get">
+            <input type="text" name="search" placeholder="Search...">
+            <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+        </form>
+    </div>
+
+    <!-------------navbar---------->  
+    <nav>
+        <div class="logo">
+            <a href="#"><img src="img/logo eye.png" alt=""></a>
+        </div>
+        <ul class="nav-links" id="navLinks">
+            <li><a class="active" href="index.php"><i class="fa-solid fa-house"></i>Home</a></li>
+            
+            <?php $sql = " SELECT * FROM `tbl_categories` WHERE `category_status` = 'A' AND `category_showNav` = '1' ORDER BY `category_id` DESC"; 
+            $result = mysqli_query($con,$sql);
+            if($result){
+                if(mysqli_num_rows($result)>0){
+                    while($row = mysqli_fetch_array($result)){
+                        ?>
+                         <li><a href="allProducts.php?categoryID=<?php echo $row['category_id']; ?>">
+                         <?php echo $row['category_name']; ?></a></li>
+                        <?php
+                    }
+                }
+            }
+            
+            ?>
+            
+            
+           
+            <li><a href="allProducts.php">All Products</a></li>
+            <?php if(isUserLogin() === true && $_SESSION['userType'] == "C"){ 
+                ?>
+            <li class="dropdown">
+                <a href="javascript:;" class="dropbtn"><?php echo $_SESSION['userName']; ?></a>
+                <div class="dropdown-content">
+                    <a href="myProfile.php"><i class="fa fa-user"></i>My Profile</a>
+                    <div class="page-divider"></div>
+                    <a href="changePassword.php"><i class="fa fa-lock"></i> Change Password</a>
+                    <div class="page-divider"></div>
+                    <a href="myOrder.php"><i class="fa fa-truck"></i> My Orders</a>
+                    <div class="page-divider"></div>
+                    <a href="logout.php"><i class="fas fa-sign-out"></i> Logout</a>
+                </div>
+            </li>
+            <li><a href="cart.html"><i class="fa-solid fa-cart-shopping"></i></a></li>
+        
+                <?php
+            }else{
+                ?>
+                <li><a href="login.php"><i class="fa-solid fa-user"></i>Login</a></li>
+                <li><a href="addToCart.php"><i class="fa-solid fa-cart-shopping"></i></a></li>
+                <?php
+            }?>
+            
+            
+        </ul>
+        
+    </nav>
+    
+    <section class="cart-section">
+        <div class="container5">
+            <div class="row">
+                <div class="col-md-7">
+                    <h5 style="font-size: 1.7rem;">My Cart</h5>
+                    
+                    <div class="cart-item">
+                        <div class="row">
+                            <div class="col-md-7">
+                                <img src="mens sunglasses/mens sunglasses_05.jpg" alt="Shopping item" width="65px">
+                            </div>
+                            <div class="col-md-7" style="margin-right: 10rem;">
+                                <h5>EyeGlasses</h5>
+                                <p>EyeGlasses101</p>
+                            </div>
+                            <div class="col-md-7" style="margin-right: 1.3rem;">
+                                <h5>2</h5>
+                            </div>
+                            <div class="col-md-7" style="margin-right: 1.3rem;">
+                                <h5> Rs 100</h5>
+                            </div>
+                           
+                                <a href=""><i class="fas fa-trash" style="color:red;"></i></a>
+                            
+                        </div>
+                    </div>
+                    
+                    <button class="cash-on-delivery-btn">
+                        <i class="fas fa-long-arrow-alt-left ms-2" style="margin-right: 0.7rem; color: white;"></i>Continue Shopping
+                    </button>
+                </div>
+                <div class="col-md-5">
+                    <div class="price-details-card">
+                        <h3 style="font-size: 1.4rem;">Price details</h3>
+                        <hr>
+                        <div class="price-detail">
+                            <p>Subtotal</p>
+                            <p>Rs 1100</p>
+                        </div>
+                        <div class="price-detail">
+                            <p>Cart Discount</p>
+                            <p>Rs 300</p>
+                        </div>
+                        <div class="price-detail">
+                            <p>Cart Total</p>
+                            <p>Rs 500</p>
+                        </div>
+                        <button class="checkout-btn">
+                            Proceed To Checkout <i class="fas fa-long-arrow-alt-right ms-2"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+</body>
+</html>

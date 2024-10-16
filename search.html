@@ -1,0 +1,121 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Document</title>
+</head>
+<body>
+    <body>
+        <div class="search-bar">
+            <form action="search.php" method="get">
+                <input type="text" name="search" placeholder="Search...">
+                <button type="submit" name="search_submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+            </form>
+        </div>
+    
+        <!-------------navbar---------->  
+        <nav>
+            <div class="logo">
+                <a href="#"><img src="img/logo eye.png" alt=""></a>
+            </div>
+            <ul class="nav-links" id="navLinks">
+                <li><a class="active" href="index.php"><i class="fa-solid fa-house"></i>Home</a></li>
+                
+                <?php $sql = " SELECT * FROM `tbl_categories` WHERE `category_status` = 'A' AND `category_showNav` = '1' ORDER BY `category_id` DESC"; 
+                $result = mysqli_query($con,$sql);
+                if($result){
+                    if(mysqli_num_rows($result)>0){
+                        while($row = mysqli_fetch_array($result)){
+                            $cID = $row['category_id'];
+                            ?>
+                             <!-- <li><a href="allProducts.php?categoryID=<?php echo $row['category_id']; ?>">
+                             <?php echo $row['category_name']; ?></a></li> -->
+    
+                             <li class="dropdown">
+                                <a href="allProducts.php?categoryID=<?php echo $cID; ?>" class="dropbtn"><?php echo $row['category_name']; ?></a>
+                                <?php 
+                                $sql2 = "SELECT * FROM `tbl_subcategories` WHERE `subcategory_categoryID` = '$cID' ORDER BY `subcategory_id` DESC";  
+                                $result2 = mysqli_query($con,$sql2);
+                                if($result2){
+                                    if(mysqli_num_rows($result2)>0){
+                                        ?>
+                                         <div class="dropdown-content">
+                                            <?php while($row2 = mysqli_fetch_array($result2)){
+                                                ?>
+                                                 <a href="allProducts.php?categoryID=<?php echo $cID; ?>&subCategoryID=<?php echo $row2['subcategory_id']; ?>"><?php echo $row2['subcategory_name'] ?></a>
+                                                 <div class="page-divider"></div>
+                                                <?php
+                                            } ?>
+                                           
+                                            
+                                        </div>
+                                        <?php
+                                    }
+                                }
+                                
+                                ?>
+                               
+                            </li>
+                            <?php
+                        }
+                    }
+                }
+                
+                ?>
+                
+                
+               
+                <li><a href="allProducts.php">All Products</a></li>
+                <?php if(isUserLogin() === true && $_SESSION['userType'] == "C"){ 
+                    ?>
+                <li class="dropdown">
+                    <a href="javascript:;" class="dropbtn"><i class="fa-solid fa-user"></i><?php echo $_SESSION['userName']; ?></a>
+                    <div class="dropdown-content">
+                        <a href="myProfile.php"><i class="fa fa-user"></i>My Profile</a>
+                        <div class="page-divider"></div>
+                        <a href="changePassword.php"><i class="fa fa-lock"></i> Change Password</a>
+                        <div class="page-divider"></div>
+                        <a href="myOrder.php"><i class="fa fa-truck"></i> My Orders</a>
+                        <div class="page-divider"></div>
+                        <a href="myCart.php"><i class="fa-solid fa-cart-shopping"></i> My Cart</a>
+                        <div class="page-divider"></div>
+                        <a href="logout.php"><i class="fas fa-sign-out"></i> Logout</a>
+                    </div>
+                </li>
+                <li><a href="cart.html"><i class="fa-solid fa-cart-shopping"></i></a></li>
+            
+                    <?php
+                }else{
+                    ?>
+                    <li><a href="login.php"><i class="fa-solid fa-user"></i>Login</a></li>
+                   
+                    <?php
+                }?>
+                
+                
+            </ul>
+            
+    <a href="javascript:;" class="menu-btn" onclick="myFunction()">
+        <i class="fa fa-bars"></i>
+      </a>
+        </nav>
+    
+        <h1>Search Results</h1>
+        <div id="search-results">
+            
+                <div class="search-result">
+                    <h2 style="font-size:1.5rem;"></h2>
+                    <p><img src="" alt=""></p>
+                   
+                </div>
+           
+        </div>
+   
+        <h1>No results found for </h1>
+    
+
+</body>
+</html>

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Order</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+    
+<body>
+    <div class="search-bar">
+        <form action="search.php" method="get">
+            <input type="text" name="search" placeholder="Search...">
+            <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+        </form>
+    </div>
+
+    <!-------------navbar---------->  
+    <nav>
+        <div class="logo">
+            <a href="#"><img src="img/logo eye.png" alt=""></a>
+        </div>
+        <ul class="nav-links" id="navLinks">
+            <li><a class="active" href="index.php"><i class="fa-solid fa-house"></i>Home</a></li>
+            
+            <?php $sql = " SELECT * FROM `tbl_categories` WHERE `category_status` = 'A' AND `category_showNav` = '1' ORDER BY `category_id` DESC"; 
+            $result = mysqli_query($con,$sql);
+            if($result){
+                if(mysqli_num_rows($result)>0){
+                    while($row = mysqli_fetch_array($result)){
+                        ?>
+                         <li><a href="allProducts.php?categoryID=<?php echo $row['category_id']; ?>">
+                         <?php echo $row['category_name']; ?></a></li>
+                        <?php
+                    }
+                }
+            }
+            
+            ?>
+            
+            
+           
+            <li><a href="allProducts.php">All Products</a></li>
+            <?php if(isUserLogin() === true && $_SESSION['userType'] == "C"){ 
+                ?>
+            <li class="dropdown">
+                <a href="javascript:;" class="dropbtn"><?php echo $_SESSION['userName']; ?></a>
+                <div class="dropdown-content">
+                    <a href="myProfile.php"><i class="fa fa-user"></i>My Profile</a>
+                    <div class="page-divider"></div>
+                    <a href="changePassword.php"><i class="fa fa-lock"></i> Change Password</a>
+                    <div class="page-divider"></div>
+                    <a href="myOrder.php"><i class="fa fa-truck"></i> My Orders</a>
+                    <div class="page-divider"></div>
+                    <a href="logout.php"><i class="fas fa-sign-out"></i> Logout</a>
+                </div>
+            </li>
+            <li><a href="cart.html"><i class="fa-solid fa-cart-shopping"></i></a></li>
+        
+                <?php
+            }else{
+                ?>
+                <li><a href="login.php"><i class="fa-solid fa-user"></i>Login</a></li>
+                <li><a href="addToCart.php"><i class="fa-solid fa-cart-shopping"></i></a></li>
+                <?php
+            }?>
+            
+            
+        </ul>
+        
+    </nav>
+    <section id="product1">
+        <h1>My Orders</h1>
+    </section>
+    <div class="container5">
+        <table>
+            <thead>
+                <tr>
+                    <th>Sr#</th>
+                    <th>Order NO </th>
+                    <th>Order date</th>
+                    <th>Total Price</th>
+                    <th>Order Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td> 1</td>
+                    <td> 12345 </td>
+                    <td> 06-3-2024 </td>
+                    <td>1900</td>
+                    <td><button>Pending</button></td>
+                    <td>
+                        <div class="dropdown">
+                          <button class="dropbtn">Action</button>
+                          <div class="dropdown-content">
+                            <a href="#">Edit</a>
+                            <a href="#">Delete</a>
+                            <a href="#">View</a>
+                          </div>
+                        </div>
+                      </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <section id="banner" class="section-m1">
+        <h4>Repair Services</h4>
+        <h2>Up to <span>50% Off</span> - All types of SunGlasses</h2>
+        <button>Explore More</button>
+      </section>
+</body>
+</html>
